@@ -2,6 +2,7 @@
 *.pdb
 *.exe
 *.dll
+*.lib
 *.user*
 MakeFile*
 mnist/
@@ -12,12 +13,10 @@ temp/
 sqlite*/
 build/
 
-build 32 bits/*
-!build 32 bits/folder.keep
+!build 32 bits/*.keep
 
-
-build 64 bits/*
-!build 64 bits/folder.keep
+build 32 bits/
+build 64 bits/
 
 debug/
 release/

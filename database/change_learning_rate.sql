@@ -1,0 +1,1 @@
+UPDATE perceptrons SET learning_rate = 0.001

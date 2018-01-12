@@ -1,0 +1,1 @@
+UPDATE combos SET id = id+1;UPDATE states SET id_combo = id_combo+1
