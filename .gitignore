@@ -1,0 +1,15 @@
+*.ilk
+*.pdb
+*.exe
+*.dll
+*.user*
+MakeFile*
+mnist/
+QCustomPlot/
+other/
+picture/
+temp/
+sqlite*/
+build*/
+debug/
+release/
