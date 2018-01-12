@@ -1,0 +1,1 @@
+UPDATE perceptrons SET id_layer = 1 WHERE id_layer = 2

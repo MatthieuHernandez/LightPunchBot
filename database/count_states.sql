@@ -1,0 +1,1 @@
+SELECT id_combo, count(*) FROM states GROUP BY id_combo HAVING count(*) > 1  ORDER BY count(*) 
