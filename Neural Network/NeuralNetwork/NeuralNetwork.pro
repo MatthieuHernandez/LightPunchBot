@@ -13,7 +13,8 @@ TARGET = NeuralNetwork
 TEMPLATE = app
 
 CONFIG += console
-CONFIG += c++11
+CONFIG += c++14
+
 
 
 SOURCES += main.cpp \
@@ -34,26 +35,32 @@ CUDA_OBJECTS_DIR = $$PWD/release/cuda
 
 
 CUDA_SOURCES += $$PWD/optimization.cu
-CUDA_DIR = "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0"            # Path to cuda toolkit install
+CUDA_DIR = "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1"            # Path to cuda toolkit install
 SYSTEM_NAME = x64                                                               # Depending on your system either 'Win32', 'x64', or 'Win64'
 SYSTEM_TYPE = 64                                                                # '32' or '64', depending on your system
 CUDA_ARCH = compute_50                                                          # Type of CUDA architecture, for example 'compute_10', 'compute_11', 'sm_10'
 CUDA_CODE = compute_50,sm_50
 NVCC_OPTIONS = --use_fast_math -O3
 
-INCLUDEPATH += "C:/Programming/Light Punch/Neural Network/NeuralNetwork" \
-               "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/include" \
-               "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin" \
+INCLUDEPATH += "C:/Programming/LightPunchBot/Neural Network/NeuralNetwork" \
+               "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/include" \
+               "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/ucrt" \
+               #"C:/Program Files (x86)/Windows Kits/10/Lib/10.0.16299.0/um/x64/" \
+               ########"C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin" \
 
 DEPENDPATH += "optimization.cu" \
-              "C:/Programming/Light Punch/Neural Network/NeuralNetwork" \
-              "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/include" \
-              "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin" \
+              "C:/Programming/LightPunchBot/Neural Network/NeuralNetwork" \
+              "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/include" \
+              #"C:/Program Files (x86)/Windows Kits/10/Lib\10.0.16299.0/ucrt/arm64" \
+              #"C:/Program Files (x86)/Windows Kits/10/Lib/10.0.16299.0/um/x64/" \
+              #########"C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin" \ # Why I was include this path ?
 
+LIBS += "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/lib/x64/*.lib" \
+        #"C:/Program Files (x86)/Windows Kits/10/Lib/10.0.16299.0/um/x64/*.lib" \
 
-LIBS += "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/lib/x64/*.lib"
-
-QMAKE_LIBDIR += "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/lib/x64/"
+QMAKE_LIBDIR += "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/lib/x64/" \
+                "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.16299.0/um/x64/" \
+                "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.16299.0/ucrt/x64" \
 
 
 QMAKE_CFLAGS_RELEASE += /MT
@@ -94,5 +101,5 @@ CONFIG(debug, debug|release) {
 
 cuda.input = CUDA_SOURCES
 cuda.output = $$CUDA_OBJECTS_DIR/${QMAKE_FILE_BASE}_cuda.o
-cuda.commands = "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/bin/nvcc.exe" $$CUDA_DEBUG $$NVCC_OPTIONS $$CUDA_INC $$NVCC_LIBS --machine $$SYSTEM_TYPE --gpu-architecture=$$CUDA_ARCH --gpu-code=$$CUDA_CODE -c -o ${QMAKE_FILE_OUT} ${QMAKE_FILE_NAME}
+cuda.commands = "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/bin/nvcc.exe" $$CUDA_DEBUG $$NVCC_OPTIONS $$CUDA_INC $$NVCC_LIBS --machine $$SYSTEM_TYPE --gpu-architecture=$$CUDA_ARCH --gpu-code=$$CUDA_CODE -c -o ${QMAKE_FILE_OUT} ${QMAKE_FILE_NAME}
 cuda.dependency_type = TYPE_C

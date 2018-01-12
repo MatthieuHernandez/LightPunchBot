@@ -10,24 +10,28 @@ QT += widgets # greaterThan(QT_MAJOR_VERSION, 4):
 
 QT += sql
 
-QT += printsupport
+#QT += printsupport
+#QT += console
 
 TEMPLATE = app
 
 CONFIG += c++14
 
-#QT += console
-
-#DEPENDPATH += "$$PWD/../Neural Network/" \
 
 INCLUDEPATH += "$$PWD/../" \
     "$$PWD/../database/sqlite-amalgamation-3150000" \
     "$$PWD/../picture" \
-    "C:/Programming/Qt/5.6/mingw49_32/bin" \
+    "C:/Qt/5.10.0/mingw53_32/bin" \
     "$$PWD/../Neural Network/NeuralNetwork" \
-    "$$PWD/../Neural Network/NeuralNetwork/cuda/bin"
+    "$$PWD/../Neural Network/NeuralNetwork/cuda/bin" \
+    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/um" \
+    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/shared"
 
-include("C:/Programming/Light Punch/Neural Network/NeuralNetwork/NeuralNetwork.pro")
+#DEPENDPATH += "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/um" \
+
+#LIBS += "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/um/*.h" \
+
+include("C:/Programming/LightPunchBot/Neural Network/NeuralNetwork/NeuralNetwork.pro")
 
 TARGET = AI
 
@@ -42,13 +46,13 @@ SOURCES += main.cpp\
     ai/algorithm.cpp \
     ai/neural_network.cpp \
     ai/neural_network_manager.cpp \
-#    "$$PWD/../Neural Network/NeuralNetwork/perceptron.cpp" \
-#    "$$PWD/../Neural Network/NeuralNetwork/neuralNetwork.cpp" \
     gui/neural_network_card.cpp \
     ai/ongoing_action.cpp \
     lib/qcustomplot.cpp \
     environnement/database.cpp \
-    environnement/database_manager.cpp
+    environnement/database_manager.cpp \
+    main.cpp \
+    main.cpp
 
 HEADERS += parameters.h \
     environnement/controler.h \
@@ -61,13 +65,12 @@ HEADERS += parameters.h \
     ai/algorithm.h \
     ai/neural_network_manager.h \
     ai/neural_network.h \
-#    "$$PWD/../Neural Network/NeuralNetwork/perceptron.h" \
-#    "$$PWD/../Neural Network/NeuralNetwork/neuralNetwork.h" \
     gui/neural_network_card.h \
     ai/ongoing_action.h \
     lib/qcustomplot.h \
     environnement/database.h \
-    environnement/database_manager.h
+    environnement/database_manager.h \
+    parameters.h
 
 FORMS += mainwindow.ui \
     gui/neural_network_card.ui
