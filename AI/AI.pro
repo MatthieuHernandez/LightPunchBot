@@ -10,19 +10,17 @@ QT += widgets # greaterThan(QT_MAJOR_VERSION, 4):
 
 QT += sql
 
-#QT += printsupport
-#QT += console
 
 TEMPLATE = app
-
 CONFIG += c++14
+CONFIG += no_batch
 
 
-INCLUDEPATH += "$$PWD/../" \
+INCLUDEPATH += "$$PWD" \
+    "$$PWD/../" \
     "$$PWD/../database/sqlite-amalgamation-3150000" \
     "$$PWD/../picture" \
-    "C:/Qt/5.10.0/mingw53_32/bin" \
-    "$$PWD/../Neural Network/NeuralNetwork" \
+    "C:/Qt/5.10.0/msvc2015_64/bin" \
     "$$PWD/../Neural Network/NeuralNetwork/cuda/bin" \
     "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/um" \
     "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/shared"
@@ -88,8 +86,3 @@ if(mingw) {
     message("MinGW")
     QMAKE_CXXFLAGS += -O3
 }
-
-DISTFILES += \
-    uml_diagram.qmodel
-
-

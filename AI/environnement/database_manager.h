@@ -30,6 +30,7 @@ class Database_manager
         static void balance_states();
         static void calcul_average_damage();
         static bool database_has_been_modify();
+        static void clean_neural_networks();
 
 
     private :

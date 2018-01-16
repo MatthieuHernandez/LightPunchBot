@@ -54,7 +54,7 @@ void Neural_network_manager::train(int id)
 {
     learning_rate.clear();
     if(Parameters::shuffle_database == true)
-        shuffle_states();
+        Database_manager::shuffle_states();
     unsigned int nb = 0;
     unsigned int shuffle_counter = 0;
     int i;
@@ -122,7 +122,7 @@ void Neural_network_manager::train(int id)
 
                     if(calcul_clustering_rate(id, true, shuffle_counter) == false)
                     {
-                        shuffle_states();
+                        Database_manager::shuffle_states();
                         shuffle_counter = 0;
                     }
                     else
@@ -388,23 +388,6 @@ void Neural_network_manager::test()
 
 }
 
-void Neural_network_manager::clean()
-{
-    Thread::instance()->write("CLEAR","nn_information");
-    Database::write("DELETE FROM perceptrons WHERE NOT EXISTS (SELECT 1 FROM neural_networks WHERE perceptrons.id_nn = neural_networks.id)");
-    balance_states();
-    calcul_average_damage();
-    if(database_has_been_modify() == true)
-    {
-        for(int i = 0; i < neural_networks.size();i++)
-        {
-            calcul_clustering_rate(neural_networks[i].id, false);
-        }
-    }
-    Thread::instance()->write("CLEAR","nn_information");
-    Thread::instance()->write("Neural networks has been cleaned","current_nn_information");
-}
-
 vector<Neural_network> Neural_network_manager::select_and_sort() // WARNING TO REWORK WITH SCORE FOR SELECT THE BEST
 {
     vector<Neural_network> result = neural_networks;
@@ -443,7 +426,7 @@ vector<Neural_network> Neural_network_manager::select_and_sort() // WARNING TO R
 
 unsigned int Neural_network_manager::get_number_of_neural_network()
 {
-    return neural_networks.size();
+    return (unsigned int)neural_networks.size();
 }
 
 const Neural_network* const Neural_network_manager::get_neural_network(int id)

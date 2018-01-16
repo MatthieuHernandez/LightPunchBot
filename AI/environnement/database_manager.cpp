@@ -5,7 +5,7 @@ void Database_manager::initialize()
 {
     Database::initialize(DATABASE);
 
-    array_for_normalisation = new int[Player::number_inputs];
+    array_for_normalisation = new float[Player::number_inputs];
     array_for_normalisation[0] = Player::instance(1)->position_x.value_for_normalization;
     array_for_normalisation[1] = Player::instance(1)->position_y.value_for_normalization;
     array_for_normalisation[2] = Player::instance(2)->position_x.value_for_normalization;
@@ -147,4 +147,21 @@ bool Database_manager::database_has_been_modify()
     else
         return false;
     return true;
+}
+
+void Database_manager::clean_neural_networks()
+{
+    Thread::instance()->write("CLEAR","nn_information");
+    Database::write("DELETE FROM perceptrons WHERE NOT EXISTS (SELECT 1 FROM neural_networks WHERE perceptrons.id_nn = neural_networks.id)");
+    balance_states();
+    calcul_average_damage();
+    if(database_has_been_modify() == true)
+    {
+        for(int i = 0; i < neural_networks.size();i++)
+        {
+            calcul_clustering_rate(neural_networks[i].id, false);
+        }
+    }
+    Thread::instance()->write("CLEAR","nn_information");
+    Thread::instance()->write("Neural networks has been cleaned","current_nn_information");
 }
