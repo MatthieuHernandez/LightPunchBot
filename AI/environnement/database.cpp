@@ -76,7 +76,7 @@ void Database::initialize(string file)
         //write("UPDATE states SET is_useful = 1");
         //write("ALTER TABLE neural_networks ADD COLUMN other_information VARCHAR(255)");
 
-        MainWindow::instance()->write((string)"Opened database " + to_string(database_number),"information");
+        MainWindow::instance()->write((string)"Open database ","information");
 
         is_open = true;
     }
