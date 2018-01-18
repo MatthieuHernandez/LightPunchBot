@@ -13,7 +13,6 @@
 
 class Neural_network_manager
 {
-    //Q_OBJECT
     private:
 
         Neural_network_manager();
@@ -50,7 +49,8 @@ class Neural_network_manager
         static void test();
         static void clean();
         static vector<Neural_network> select_and_sort();
-        static bool calcul_clustering_rate(int id_combo, int id, bool is_training, const unsigned int &offset = 0);
+        static bool calcul_clustering_rate(int id, bool is_training, const unsigned int &offset = 0);
+        static void calcul_all_clustering_rate();
 
         static unsigned int get_number_of_neural_network();
         static const Neural_network* const get_neural_network(int id);

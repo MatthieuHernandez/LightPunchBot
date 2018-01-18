@@ -3,8 +3,6 @@
 #define KKK 1
 #include "neural_network_manager.h"
 
-using namespace Database_manager;
-
 vector<Neural_network> Neural_network_manager::neural_networks;
 vector<Neural_network> Neural_network_manager::neural_networks_temp;
 QVector<double> Neural_network_manager::learning_rate;
@@ -176,7 +174,7 @@ void Neural_network_manager::train_all()
 
 void Neural_network_manager::calcul_clustering_rate()
 {
-    bool_ccr = calcul_clustering_rate(id_combo_ccr, id_ccr, is_training_ccr, offset_crr);
+    bool_ccr = calcul_clustering_rate(id_ccr, is_training_ccr, offset_crr);
 }
 
 bool Neural_network_manager::calcul_clustering_rate(int id, bool is_training, const unsigned int &offset) // return false if it needs to shuffle database
@@ -185,7 +183,7 @@ bool Neural_network_manager::calcul_clustering_rate(int id, bool is_training, co
     vector<vector<float>> multiple_inputs;
     //unsigned int i;
 
-    for(int kk = 0; kk < KKK; kk++)////////////////////////////////////////////
+    for(int kk = 0; kk < KKK; kk++)//////////////////////////////////////////// TO REMOVE
     {
         if(is_training == true)
         {
@@ -223,28 +221,29 @@ bool Neural_network_manager::calcul_clustering_rate(int id, bool is_training, co
     float array_of_sum_of_positive[NUMBER_ACTION] = {0};    // Algorithm::number_action
     double score = 0;
     float x = 0;
-    for(int j = 0; j < states_for_testing.size(); j ++)
+    for(int j = 0; j < Database_manager::states_for_testing.size(); j ++)
     {
-        array_of_sum[states_for_testing[j].id_combo-1] ++;
+        Database_manager::array_of_sum[Database_manager::states_for_testing[j].id_combo-1] ++;
 
-        if(neural_networks_temp[id].calculateClusteringRate(states_for_testing[j].inputs,  states_for_testing[j].desired_outputs) == true) // IMPORTANT
+        if(neural_networks_temp[id].calculateClusteringRate(Database_manager::states_for_testing[j].inputs,
+                                                            Database_manager::states_for_testing[j].desired_outputs) == true) // IMPORTANT
         {
-            if((states_for_testing[j].score > 0)
-            || (states_for_testing[j].score >= 0 && states_for_testing[j].deal_damage == false))
+            if((Database_manager::states_for_testing[j].score > 0)
+            || (Database_manager::states_for_testing[j].score >= 0 && Database_manager::states_for_testing[j].deal_damage == false))
             {
-                array_of_positive[states_for_testing[j].id_combo-1]++;
+                array_of_positive[Database_manager::states_for_testing[j].id_combo-1]++;
                 neural_networks_.numberOfPositiveResultsClassifiedWell++;
             }
             else
             {
-                array_of_negative[states_for_testing[j].id_combo-1]++;
+                array_of_negative[Database_manager::states_for_testing[j].id_combo-1]++;
                 neural_networks_.numberOfNegativeResultsClassifiedWell++;
             }
         }
         else
         {
-            if((states_for_testing[j].score > 0)
-            || (states_for_testing[j].score >= 0 && states_for_testing[j].deal_damage == false))
+            if((Database_manager::states_for_testing[j].score > 0)
+            || (Database_manager::states_for_testing[j].score >= 0 && Database_manager::states_for_testing[j].deal_damage == false))
             {
                 neural_networks_.numberOfPositiveResultsMisclassified++;
             }
@@ -253,7 +252,7 @@ bool Neural_network_manager::calcul_clustering_rate(int id, bool is_training, co
                 neural_networks_temp[id].numberOfNegativeResultsMisclassified++;
             }
         }
-        array_of_sum[states_for_testing[j].id_combo-1]++;
+        array_of_sum[Database_manager::states_for_testing[j].id_combo-1]++;
     }
     for(int j = 0; j < Algorithm::number_action; j++) // computation of the score
     {
@@ -388,6 +387,19 @@ void Neural_network_manager::test()
 
 }
 
+void Neural_network_manager::calcul_all_clustering_rate()
+{
+    int _; // TO MODIFY
+    if(Database_manager::database_has_been_modify() == true)
+    {
+        for(int i = 0; i < neural_networks.size();i++)
+        {
+            _ = calcul_clustering_rate(neural_networks[i].id, false);
+        }
+    }
+    Thread::instance()->write("Neural networks has been cleaned","current_nn_information");
+}
+
 vector<Neural_network> Neural_network_manager::select_and_sort() // WARNING TO REWORK WITH SCORE FOR SELECT THE BEST
 {
     vector<Neural_network> result = neural_networks;
@@ -431,6 +443,6 @@ unsigned int Neural_network_manager::get_number_of_neural_network()
 
 const Neural_network* const Neural_network_manager::get_neural_network(int id)
 {
-    return const_cast<Neural_network*>(NeuralNetwork*)&neural_networks[id];
+    //return const_cast<const Neural_network*>(NeuralNetwork*)&neural_networks[id];
 }
 

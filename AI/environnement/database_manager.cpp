@@ -22,44 +22,45 @@ void Database_manager::initialize()
     initialize_vector_of_ids();
 }
 
-void Database_manager::initialize_states(vector<state> v, string text)
+void Database_manager::initialize_states(vector<state> states, string text)
 {
     vector<string> request = Database::read("SELECT score, deals_damage, states.id_combo, position_x, position_y, position_x_2, position_y_2, distance, state, state_2, "
-                                        "time_state, time_state_2, is_useful FROM states, combos"
-                                        " WHERE states.id_combo = combos.id AND states.learning_set = '" + text + "' ORDER BY random");
+                                        "time_state, time_state_2, is_useful FROM states FULL JOIN combos ON states.id_combo = combos.id"
+                                        " WHERE states.learning_set = '" + text + "' ORDER BY random");
 
-    v.resize(request.size()/(Player::number_inputs+4));
-    for(int i = 0, k = 0; i < v.size(); i++)
+    states.resize(request.size()/(Player::number_inputs+4));
+
+    for(int i = 0, k = 0; i < states.size(); i++)
     {
         if(request[k] == "TRUE")
-            v[i].deal_damage = true;
+            states[i].deal_damage = true;
         else if(request[k] == "FALSE")
-            v[i].deal_damage = false;
+            states[i].deal_damage = false;
         else
             cout << "ERROR : line 37 - database_manager.h" << endl;
         k++;
-        id_combo = stoi(request[k]);
+        states[i].id_combo = stoi(request[k]);
         k++;
-        v[i].inputs.resize(Player::number_inputs);
+        states[i].inputs.resize(Player::number_inputs);
         for(int j = 0; j < Player::number_inputs; j++, k++)
         {
-            v[i].inputs[j] = stof(request[k]);
+            states[i].inputs[j] = stof(request[k]);
         }
         if(request[k] == "1")
-            v[i].is_useful = true;
+            states[i].is_useful = true;
         else if(request[k] == "0")
-            v[i].is_useful = false;
+            states[i].is_useful = false;
         else
             cout << "ERROR : line 51 - database_manager.h" << endl;
         k++;
 
-        v[i].desired_outputs.resize(Player::number_outputs, -1);
+        states[i].desired_outputs.resize(Player::number_outputs, -1);
 
-        if((v[i].score > 0)
-        && (v[i].score >= 0 && v[i].is_useful = false))
-            v[i].desired_outputs[v[i].id_combo] = 1;
+        if((states[i].score > 0)
+        && (states[i].score >= 0 && states[i].is_useful = false))
+            states[i].desired_outputs[states[i].id_combo] = 1;
         else
-            v[i].desired_outputs[v[i].id_combo] = 0;
+            states[i].desired_outputs[states[i].id_combo] = 0;
 
     }
 }
@@ -155,13 +156,5 @@ void Database_manager::clean_neural_networks()
     Database::write("DELETE FROM perceptrons WHERE NOT EXISTS (SELECT 1 FROM neural_networks WHERE perceptrons.id_nn = neural_networks.id)");
     balance_states();
     calcul_average_damage();
-    if(database_has_been_modify() == true)
-    {
-        for(int i = 0; i < neural_networks.size();i++)
-        {
-            calcul_clustering_rate(neural_networks[i].id, false);
-        }
-    }
-    Thread::instance()->write("CLEAR","nn_information");
-    Thread::instance()->write("Neural networks has been cleaned","current_nn_information");
+    Thread::instance()->write("Database clear","nn_information");
 }

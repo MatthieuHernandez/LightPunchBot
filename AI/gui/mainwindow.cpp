@@ -161,13 +161,13 @@ void MainWindow::neural_networks_buttons() // TO MODIFY : before instance on dat
 {
     for(unsigned int i = 0; i < Neural_network_manager::get_number_of_neural_network(); i++)
     {
-        Neural_network *temp_nn = Neural_network_manager::get_neural_network(i);
+        const Neural_network *temp_nn = Neural_network_manager::get_neural_network(i);
         neural_network_buttons nnb;
         list_nn_buttons.push_back(nnb);
         const string name = to_string(temp_nn->id) + ") " + "neural network";
         list_nn_buttons.back().combo_name_nn = new QLabel(name.c_str());
         list_nn_buttons.back().id = temp_nn->id;
-        list_nn_buttons.back().clustering_rate_nn = new QLabel("");
+        list_nn_buttons.back().clustering_rate_nn = new QLabel(to_string(temp_nn->clustering_rate) + "%");
         list_nn_buttons.back().train_nn = new QPushButton("Train");
         list_nn_buttons.back().train_nn->setCheckable(true);
         list_nn_buttons.back().add_nn = new QPushButton("Add");
