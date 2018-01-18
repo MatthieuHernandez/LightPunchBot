@@ -48,7 +48,7 @@ void Neural_network_manager::remove(int id)
     }
 }
 
-void Neural_network_manager::train(int id)
+void Neural_network_manager::train(int id = -1)
 {
     learning_rate.clear();
     if(Parameters::shuffle_database == true)
@@ -72,51 +72,14 @@ void Neural_network_manager::train(int id)
                     Thread::instance()->write("ERROR FOUND : " + to_string(neural_networks_temp[id].getLastError()), "nn_information");
                     return;
                 }
-                // FOR OPTIMIZE
-                /*Database::instance(1)->read((string)"SELECT score, deals_damage, states.id_combo, life, life_2, position_x, position_y, position_x_2, position_y_2, distance, orientation, state, state_2, "
-                                                    "time_state, time_state_2, super, super_2, stun, stun_2, v_trigger, v_trigger_2, duration, duration_2 FROM states, combos"
-                                                    " WHERE " + "states.id_combo = combos.id AND states.learning_set = 'FALSE' ORDER BY random");
-                request_for_test = Database::instance(1)->result_request;
-                cout << request_for_test[1] << endl;*/
                 do
                 {
-                    //neural_networks_temp[id].batch_size = 1;//randomBetween(5, 10);// ////////////////////////////////////////////////////////////////////////
+                    //neural_networks_temp[id].batch_size = 1;//randomBetween(5, 10);
                     //neural_networks_temp[id].setLearningRate(0.002 * randomBetween(1, 199));
 
 
-                    /* multithreading
-                    id_combo_ccr = id_combo;
-                    id_ccr = id;
-                    is_training_ccr = true;
-                    offset_crr = shuffle_counter;
+                    cout << "data shuffled" << endl;
 
-
-                    for(int j = 0; j < Parameters::number_of_thread; j++)
-                    {
-                        QTimer *t = new QTimer(this);
-                        t->singleShot(0, this, SLOT(calcul_clustering_rate()));
-                        timers.push_back(t);
-                        Thread::instance()->sleep(1);
-                    }
-                    bool is_end;
-                    do
-                    {
-                        is_end = true;
-                        for(int j = 0; j < timers.size(); j++)
-                        {
-                            if(timers[j]->isActive() == true)
-                            {
-                                is_end = false;
-                            }
-
-                        }
-                    } while(is_end == false);
-
-                    nb += timers.size();
-                    timers.clear();
-
-                    if(bool_ccr == false)
-                    {*/
 
                     if(calcul_clustering_rate(id, true, shuffle_counter) == false)
                     {
@@ -172,10 +135,22 @@ void Neural_network_manager::train_all()
     Neural_network_manager::train(-1);
 }
 
-void Neural_network_manager::calcul_clustering_rate()
+void Neural_network_manager::training(int nn_id, state learning_state)
 {
-    bool_ccr = calcul_clustering_rate(id_ccr, is_training_ccr, offset_crr);
+    neural_networks_temp[nn_id].train(learning_state.inputs, learning_state.desired_outputs);
 }
+
+void Neural_network_manager::calcul_clustering_rate(int nn_id, vector<state> testing_states)
+{
+
+}
+
+
+void NeuralNetwork::calculateClusteringRate()
+{
+
+}
+
 
 bool Neural_network_manager::calcul_clustering_rate(int id, bool is_training, const unsigned int &offset) // return false if it needs to shuffle database
 {
@@ -187,16 +162,14 @@ bool Neural_network_manager::calcul_clustering_rate(int id, bool is_training, co
     {
         if(is_training == true)
         {
-            neural_networks_temp[id].resetCalculationOfClusteringRate(); // IMPORTANT
-
-            for(int j = 0; j < states_for_learning.size(); j++)
+            for(int j = 0; j < Database_manager::states_for_learning.size(); j++)
             {
-                multiple_desired_outputs.push_back(states_for_learning[j].desired_outputs);
+                multiple_desired_outputs.push_back(Database_manager::states_for_learning[j].desired_outputs);
                 multiple_inputs.push_back(Player::get_inputs(result, j+3));
             }
             if(multiple_desired_outputs.size() == neural_networks_temp[id].batch_size)
             {
-                neural_networks_temp[id].train(multiple_inputs, multiple_desired_outputs); // IMPORTANT
+                 // IMPORTANT
                 multiple_desired_outputs.clear();
                 multiple_inputs.clear();
             }
@@ -223,7 +196,7 @@ bool Neural_network_manager::calcul_clustering_rate(int id, bool is_training, co
     float x = 0;
     for(int j = 0; j < Database_manager::states_for_testing.size(); j ++)
     {
-        Database_manager::array_of_sum[Database_manager::states_for_testing[j].id_combo-1] ++;
+        array_of_sum[Database_manager::states_for_testing[j].id_combo-1] ++;
 
         if(neural_networks_temp[id].calculateClusteringRate(Database_manager::states_for_testing[j].inputs,
                                                             Database_manager::states_for_testing[j].desired_outputs) == true) // IMPORTANT
@@ -323,8 +296,8 @@ void Neural_network_manager::load()
     Player::instance(1);
     Player::instance(2);
     bool test = false;
-    bool test2 = database_has_been_modify();
-    for(int i = 0; i < ids.size(); i ++)
+    bool test2 = Database_manager::database_has_been_modify();
+    for(int i = 0; i < Database_manager::ids.size(); i ++)
     {
         neural_networks.push_back(Neural_network::load(ids[i]));
         neural_networks_temp.push_back(neural_networks.back());
@@ -446,3 +419,36 @@ const Neural_network* const Neural_network_manager::get_neural_network(int id)
     //return const_cast<const Neural_network*>(NeuralNetwork*)&neural_networks[id];
 }
 
+/* multithreading
+id_combo_ccr = id_combo;
+id_ccr = id;
+is_training_ccr = true;
+offset_crr = shuffle_counter;
+
+
+for(int j = 0; j < Parameters::number_of_thread; j++)
+{
+    QTimer *t = new QTimer(this);
+    t->singleShot(0, this, SLOT(calcul_clustering_rate()));
+    timers.push_back(t);
+    Thread::instance()->sleep(1);
+}
+bool is_end;
+do
+{
+    is_end = true;
+    for(int j = 0; j < timers.size(); j++)
+    {
+        if(timers[j]->isActive() == true)
+        {
+            is_end = false;
+        }
+
+    }
+} while(is_end == false);
+
+nb += timers.size();
+timers.clear();
+
+if(bool_ccr == false)
+{*/

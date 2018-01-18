@@ -17,7 +17,7 @@ class Neural_network_manager
 
         Neural_network_manager();
         ~Neural_network_manager();
-
+        static vector<Neural_network> neural_networks;
         static vector<Neural_network> neural_networks_temp;
 
         static void calcul_average_damage();
@@ -35,7 +35,7 @@ class Neural_network_manager
 
     public:
 
-        static vector<Neural_network> neural_networks;
+
         static QVector<double> learning_rate;
 
         static Neural_network_manager* instance();
@@ -49,15 +49,18 @@ class Neural_network_manager
         static void test();
         static void clean();
         static vector<Neural_network> select_and_sort();
-        static bool calcul_clustering_rate(int id, bool is_training, const unsigned int &offset = 0);
+
+        static void training(int nn_id, state learning_state);
+        static void calcul_clustering_rate(int nn_id, vector<state> testing_states);
+
         static void calcul_all_clustering_rate();
 
         static unsigned int get_number_of_neural_network();
         static const Neural_network* const get_neural_network(int id);
 
-    public slots:
+    //public slots:
 
-        void calcul_clustering_rate();
+        //void calcul_clustering_rate();
 
 
 

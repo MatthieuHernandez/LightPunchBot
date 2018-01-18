@@ -22,6 +22,9 @@ class Database_manager
         static vector<string> combos;
         static vector<int> ids;
 
+        static vector<state> states_for_learning;
+        static vector<state> states_for_testing;
+
         static void initialize();
         static void initialize_basic_information();
         static void initialize_vector_of_ids();
@@ -37,9 +40,6 @@ class Database_manager
 
         static float *array_for_normalisation;
         static int index_of_states;
-
-        static vector<state> states_for_learning;
-        static vector<state> states_for_testing;
 
         static void initialize_states(vector<state> v, string text);
 };

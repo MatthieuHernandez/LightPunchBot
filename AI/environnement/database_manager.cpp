@@ -54,13 +54,22 @@ void Database_manager::initialize_states(vector<state> states, string text)
             cout << "ERROR : line 51 - database_manager.h" << endl;
         k++;
 
-        states[i].desired_outputs.resize(Player::number_outputs, -1);
+        states[i].desired_outputs.resize(Player::number_outputs, -1); // TO MODIFY
 
-        if((states[i].score > 0)
-        && (states[i].score >= 0 && states[i].is_useful = false))
+        if((states[i].score > 0 && states[i].deal_damage == true)
+        || (states[i].score == 0 && states[i].deal_damage == false))
+        {
             states[i].desired_outputs[states[i].id_combo] = 1;
-        else
+        }
+        else if(states[i].score < 0)
+        {
             states[i].desired_outputs[states[i].id_combo] = 0;
+        }
+        else
+        {
+            states.erase(states.begin()+i);
+        }
+
 
     }
 }
