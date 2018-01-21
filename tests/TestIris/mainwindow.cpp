@@ -41,7 +41,7 @@ void MainWindow::loadData()
 {
 
     string line;
-    ifstream file ("C:/Programming/Light Punch/tests/iris.txt");
+    ifstream file ("C:/Programming/LightPunchBot/tests/iris.txt");
     int count = 0;
     vector<vector<string>> individuals;
     vector<string> temp;
@@ -117,7 +117,7 @@ void MainWindow::intialisation() // less than 100 times train to obtain 90%
     srand(time(NULL));
     loadData();
 
-    NeuralNetwork neuralNetwork(4, 2, 100, 3); // 95.333% neuralNetwork(4, 1, 15, 3) // 3 * 100 for speed test
+    NeuralNetwork neuralNetwork(4, 2, 10, 3); // 95.333% neuralNetwork(4, 1, 15, 3) // 3 * 100 for speed test
     neuralNetwork.resetCalculationOfClusteringRate();
     neuralNetwork.setLearningRate(0.01f);
     neuralNetwork.setMomentum(0.9f);
@@ -162,7 +162,7 @@ void MainWindow::intialisation() // less than 100 times train to obtain 90%
             cluseringRateMax = neuralNetwork.getClusteringRate();
             epochMax = c;
         }
-        if(c%50 == 0)
+        if(c%200 == 0)
         {
             //cout << neuralNetwork.display() << endl;
             cout << "clustering rate : " << neuralNetwork.getClusteringRate() << " epoch : " << c << endl;

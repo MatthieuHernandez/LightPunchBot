@@ -22,13 +22,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-include("C:/Programming/Light Punch/Neural Network/NeuralNetwork/NeuralNetwork.pro")
+include("C:/Programming/LightPunchBot/Neural Network/NeuralNetwork/NeuralNetwork.pro")
 
-INCLUDEPATH += $$PWD
+INCLUDEPATH += $$PWD \
+               "C:/Qt/5.10.0/msvc2015_64/bin" \
+               "$$PWD/../Neural Network/NeuralNetwork/cuda/bin" \
+               "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include" \
+               "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/um" \
+               "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/shared" \
+               "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/ucrt" \
+#DESTDIR = $$PWD
 
-DESTDIR = $$PWD
-
-QMAKE_CXXFLAGS += -O3
+#QMAKE_CXXFLAGS += -O3
 
 SOURCES += \
         main.cpp \

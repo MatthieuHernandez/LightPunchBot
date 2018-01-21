@@ -13,7 +13,6 @@ QT += sql
 
 TEMPLATE = app
 CONFIG += c++14
-CONFIG += no_batch
 
 
 INCLUDEPATH += "$$PWD" \
@@ -22,6 +21,7 @@ INCLUDEPATH += "$$PWD" \
     "$$PWD/../picture" \
     "C:/Qt/5.10.0/msvc2015_64/bin" \
     "$$PWD/../Neural Network/NeuralNetwork/cuda/bin" \
+    "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include" \
     "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/um" \
     "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/shared"
 

@@ -23,8 +23,8 @@ void MainWindow::readData()
     imagesTest.clear();
     ifstream imagesTestFile;
     ifstream labelsTestFile;
-    imagesTestFile.open(".\\mnist\\t10k-images.idx3-ubyte", ios::in | ios::binary);
-    labelsTestFile.open(".\\mnist\\t10k-labels.idx1-ubyte", ios::in | ios::binary);
+    imagesTestFile.open("C:\\Programming\\LightPunchBot\\tests\\MNIST\\mnist\\t10k-images.idx3-ubyte", ios::in | ios::binary);
+    labelsTestFile.open("C:\\Programming\\LightPunchBot\\tests\\MNIST\\mnist\\t10k-labels.idx1-ubyte", ios::in | ios::binary);
 
     int c;
     int i;
