@@ -5,7 +5,7 @@
 *.lib
 *.user*
 MakeFile*
-mnist/
+*-ubyte
 QCustomPlot/
 other/
 picture/
