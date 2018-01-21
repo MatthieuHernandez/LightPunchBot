@@ -1,5 +1,7 @@
-#include "database_manager.h"
 #include <environnement/database.h>
+#include <environnement/player.h>
+#include <parameters.h>
+#include <gui/thread.h>
 
 void Database_manager::initialize()
 {

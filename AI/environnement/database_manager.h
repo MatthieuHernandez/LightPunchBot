@@ -1,8 +1,5 @@
 #ifndef DATABASE_MANAGER_H
 #define DATABASE_MANAGER_H
-#include <parameters.h>
-#include <gui/thread.h>
-#include <environnement/player.h>
 
 struct state
 {

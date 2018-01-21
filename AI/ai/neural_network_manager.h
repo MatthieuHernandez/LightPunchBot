@@ -50,8 +50,8 @@ class Neural_network_manager
         static void clean();
         static vector<Neural_network> select_and_sort();
 
-        static void training(int nn_id, state learning_state);
-        static void calcul_clustering_rate(int nn_id, vector<state> testing_states);
+        static void training(int nn_id, state &learning_state);
+        static void calcul_clustering_rate(int nn_id, vector<state> &testing_states);
 
         static void calcul_all_clustering_rate();
 

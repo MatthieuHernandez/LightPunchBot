@@ -42,6 +42,7 @@ class Neural_network : public NeuralNetwork
             numberOfNegativeResultsClassifiedWell = 0;
             numberOfPositiveResultsMisclassified = 0;
             numberOfNegativeResultsMisclassified = 0;
+            this->resetCalculationOfClusteringRate();
         }
 };
 

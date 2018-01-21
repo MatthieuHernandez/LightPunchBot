@@ -79,7 +79,7 @@ void Neural_network_manager::train(int id = -1)
 
 
                     cout << "data shuffled" << endl;
-
+                    cout << "batch" << endl;
 
                     if(calcul_clustering_rate(id, true, shuffle_counter) == false)
                     {
@@ -105,23 +105,6 @@ void Neural_network_manager::train(int id = -1)
                 break;
             }
         }
-        /*if(train_all == true)
-        {
-            Thread::instance()->write("Neural network train " + to_string(nb) + " times.", "current_nn_information");
-            nb++;
-            if(nb%NUMBER_SHUFFLE_TRAIN_ALL == 0 && Parameters::shuffle_database == true)
-            {
-                shuffle_states();
-            }
-            if(shuffle_counter < number_of_states - neural_networks_temp[id].batch_size)
-                shuffle_counter += neural_networks_temp[id].batch_size;
-            else
-            {
-                shuffle_counter = 0;
-                shuffle_states();
-            }
-            // WITH BATCH_SIZE MAX
-        }*/
     }while(Parameters::choice_function == TRAIN_ALL_NN /*&& train_all == true*/);
 
     if(train_all == false)
@@ -135,63 +118,20 @@ void Neural_network_manager::train_all()
     Neural_network_manager::train(-1);
 }
 
-void Neural_network_manager::training(int nn_id, state learning_state)
+void Neural_network_manager::training(int nn_id, state &learning_state)
 {
     neural_networks_temp[nn_id].train(learning_state.inputs, learning_state.desired_outputs);
 }
 
-void Neural_network_manager::calcul_clustering_rate(int nn_id, vector<state> testing_states)
+void Neural_network_manager::calcul_clustering_rate(int nn_id, vector<state> &testing_states)
 {
-
-}
-
-
-void NeuralNetwork::calculateClusteringRate()
-{
-
-}
-
-
-bool Neural_network_manager::calcul_clustering_rate(int id, bool is_training, const unsigned int &offset) // return false if it needs to shuffle database
-{
-    vector<vector<float>> multiple_desired_outputs;
-    vector<vector<float>> multiple_inputs;
-    //unsigned int i;
-
-    for(int kk = 0; kk < KKK; kk++)//////////////////////////////////////////// TO REMOVE
-    {
-        if(is_training == true)
-        {
-            for(int j = 0; j < Database_manager::states_for_learning.size(); j++)
-            {
-                multiple_desired_outputs.push_back(Database_manager::states_for_learning[j].desired_outputs);
-                multiple_inputs.push_back(Player::get_inputs(result, j+3));
-            }
-            if(multiple_desired_outputs.size() == neural_networks_temp[id].batch_size)
-            {
-                 // IMPORTANT
-                multiple_desired_outputs.clear();
-                multiple_inputs.clear();
-            }
-            else
-            {
-                cout << "data shuffled" << endl;
-                return false;
-            }
-        }
-        else // is_trainning == false
-        {
-            neural_networks_temp[id] == neural_networks[i];
-        }
-    }
-    neural_networks_temp[id].resetCalculationOfClusteringRate(); // IMPORTANT
     neural_networks_temp[id].reset_classification();
-
     float array_of_positive[NUMBER_ACTION] = {0};           // Algorithm::number_action
     float array_of_negative[NUMBER_ACTION] = {0};           // Algorithm::number_action
     float array_of_sum[NUMBER_ACTION] = {0};                // Algorithm::number_action
     float array_of_sum_of_negative[NUMBER_ACTION] = {0};    // Algorithm::number_action
     float array_of_sum_of_positive[NUMBER_ACTION] = {0};    // Algorithm::number_action
+
     double score = 0;
     float x = 0;
     for(int j = 0; j < Database_manager::states_for_testing.size(); j ++)
@@ -414,9 +354,13 @@ unsigned int Neural_network_manager::get_number_of_neural_network()
     return (unsigned int)neural_networks.size();
 }
 
-const Neural_network* const Neural_network_manager::get_neural_network(int id)
+const Neural_network* Neural_network_manager::get_neural_network(int id)
 {
-    //return const_cast<const Neural_network*>(NeuralNetwork*)&neural_networks[id];
+    NeuralNetwork* nn1 = &neural_networks[id];
+    const Neural_network* nn2 = const_cast<Neural_network*>(nn1);
+    return nn2;
+    //return const_cast<Neural_network*>(NeuralNetwork*)&neural_networks[id];
+    //
 }
 
 /* multithreading
@@ -452,3 +396,21 @@ timers.clear();
 
 if(bool_ccr == false)
 {*/
+
+/*if(train_all == true)
+{
+    Thread::instance()->write("Neural network train " + to_string(nb) + " times.", "current_nn_information");
+    nb++;
+    if(nb%NUMBER_SHUFFLE_TRAIN_ALL == 0 && Parameters::shuffle_database == true)
+    {
+        shuffle_states();
+    }
+    if(shuffle_counter < number_of_states - neural_networks_temp[id].batch_size)
+        shuffle_counter += neural_networks_temp[id].batch_size;
+    else
+    {
+        shuffle_counter = 0;
+        shuffle_states();
+    }
+    // WITH BATCH_SIZE MAX
+}*/
